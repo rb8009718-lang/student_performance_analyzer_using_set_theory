@@ -1188,12 +1188,12 @@ def create_default_teacher():
 # MAIN
 # =========================================================
 
-if __name__ == "__main__":
+#Initialize database when application starts
 
     init_db()
 
     create_default_teacher()
-
+if __name__ == "__main__":
     print()
     print("=" * 50)
     print(" STUDENT PERFORMANCE ANALYZER")
