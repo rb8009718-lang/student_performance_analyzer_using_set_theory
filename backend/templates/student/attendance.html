@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}My Attendance{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <p class="eyebrow">STUDENT PORTAL</p>
+
+        <h1>My Attendance</h1>
+
+        <p>
+            Subject-wise attendance summary.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h2>Attendance Summary</h2>
+
+            <p>
+                Attendance percentage is calculated automatically.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Subject</th>
+                    <th>Total Classes</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Attendance</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in attendance_summary %}
+
+                {% set total = row.total_classes or 0 %}
+                {% set present = row.present_classes or 0 %}
+
+                {% if total > 0 %}
+
+                    {% set percentage =
+                        (present / total) * 100
+                    %}
+
+                {% else %}
+
+                    {% set percentage = 0 %}
+
+                {% endif %}
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+                            {{ row.subject_code }}
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            {{ row.subject_name }}
+                        </small>
+
+                    </td>
+
+                    <td>{{ total }}</td>
+
+                    <td>{{ present }}</td>
+
+                    <td>{{ total - present }}</td>
+
+                    <td>
+
+                        <div class="progress-container">
+
+                            <div
+                                class="progress-bar"
+                                style="width: {{ percentage }}%;">
+                            </div>
+
+                        </div>
+
+                        <strong>
+                            {{ "%.1f"|format(percentage) }}%
+                        </strong>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="card-header">
+
+        <h2>Attendance History</h2>
+
+    </div>
+
+
+    {% if attendance_records %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in attendance_records %}
+
+                <tr>
+
+                    <td>
+                        {{ record.date }}
+                    </td>
+
+                    <td>
+                        {{ record.subject_code }}
+                        -
+                        {{ record.subject_name }}
+                    </td>
+
+                    <td>
+
+                        {% if record.status == "Present" %}
+
+                        <span class="status present">
+                            Present
+                        </span>
+
+                        {% else %}
+
+                        <span class="status absent">
+                            Absent
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        No attendance records available.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

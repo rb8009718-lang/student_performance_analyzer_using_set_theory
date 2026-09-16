@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <p class="eyebrow">TEACHER PANEL</p>
+
+        <h1>Dashboard</h1>
+
+        <p>
+            Manage students, marks, attendance and subjects.
+        </p>
+    </div>
+
+    <a href="{{ url_for('add_student') }}"
+       class="primary-btn">
+        + Add Student
+    </a>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">👨‍🎓</div>
+
+        <div>
+            <span>Total Students</span>
+            <strong>{{ student_count }}</strong>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📚</div>
+
+        <div>
+            <span>Total Subjects</span>
+            <strong>{{ subject_count }}</strong>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">🏫</div>
+
+        <div>
+            <span>Divisions</span>
+            <strong>{{ division_count }}</strong>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📝</div>
+
+        <div>
+            <span>Marks Records</span>
+            <strong>{{ marks_count }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+
+<h2 class="section-title">
+    Management
+</h2>
+
+
+<div class="management-grid">
+
+    <a class="management-card"
+       href="{{ url_for('teacher_students') }}">
+
+        <span class="management-icon">👨‍🎓</span>
+
+        <h3>Students</h3>
+
+        <p>
+            View and manage division-wise students.
+        </p>
+
+        <span class="card-link">
+            Open →
+        </span>
+
+    </a>
+
+
+    <a class="management-card"
+       href="{{ url_for('teacher_marks') }}">
+
+        <span class="management-icon">📊</span>
+
+        <h3>Marks</h3>
+
+        <p>
+            Add and update student examination marks.
+        </p>
+
+        <span class="card-link">
+            Open →
+        </span>
+
+    </a>
+
+
+    <a class="management-card"
+       href="{{ url_for('teacher_attendance') }}">
+
+        <span class="management-icon">📅</span>
+
+        <h3>Attendance</h3>
+
+        <p>
+            Record and manage student attendance.
+        </p>
+
+        <span class="card-link">
+            Open →
+        </span>
+
+    </a>
+
+
+    <a class="management-card"
+       href="{{ url_for('teacher_subjects') }}">
+
+        <span class="management-icon">📚</span>
+
+        <h3>Subjects</h3>
+
+        <p>
+            Add and manage academic subjects.
+        </p>
+
+        <span class="card-link">
+            Open →
+        </span>
+
+    </a>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="card-header">
+
+        <div>
+            <h2>Recently Added Students</h2>
+            <p>Latest students in the system.</p>
+        </div>
+
+        <a href="{{ url_for('teacher_students') }}"
+           class="secondary-btn">
+            View All
+        </a>
+
+    </div>
+
+
+    {% if recent_students %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Roll No.</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Division</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for student in recent_students %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ student.student_roll }}</strong>
+                    </td>
+
+                    <td>{{ student.name }}</td>
+
+                    <td>{{ student.course }}</td>
+
+                    <td>
+                        <span class="badge">
+                            {{ student.division_name or "N/A" }}
+                        </span>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No students found.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

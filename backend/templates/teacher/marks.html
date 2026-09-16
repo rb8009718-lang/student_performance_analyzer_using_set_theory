@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Marks Management{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <p class="eyebrow">TEACHER PANEL</p>
+
+        <h1>Marks Management</h1>
+
+        <p>
+            Select a student to manage marks.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="student-grid">
+
+{% for student in students %}
+
+<a
+    href="{{ url_for('manage_marks', student_id=student.id) }}"
+    class="student-card">
+
+    <div class="student-avatar">
+        {{ student.name[0]|upper }}
+    </div>
+
+    <div>
+
+        <h3>{{ student.name }}</h3>
+
+        <p>
+            {{ student.student_roll }}
+        </p>
+
+        <span class="badge">
+            {{ student.division_name or "N/A" }}
+        </span>
+
+    </div>
+
+    <span class="arrow">
+        →
+    </span>
+
+</a>
+
+{% else %}
+
+<div class="empty-state">
+    No students found.
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+
+{% block title %}Set Theory Analysis{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <p class="eyebrow">MATHEMATICAL ANALYSIS</p>
+
+        <h1>Set Theory Analysis</h1>
+
+        <p>
+            Student performance analyzed using set operations.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="theory-card">
+
+    <h2>Set Definitions</h2>
+
+    <div class="set-definition">
+
+        <div class="set-box">
+
+            <span class="set-letter">
+                A
+            </span>
+
+            <div>
+
+                <strong>Passed Subjects</strong>
+
+                <p>
+                    Subjects where average marks
+                    are greater than or equal to
+                    passing marks.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="set-box">
+
+            <span class="set-letter">
+                B
+            </span>
+
+            <div>
+
+                <strong>Good Attendance</strong>
+
+                <p>
+                    Subjects where attendance
+                    is at least 75%.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="set-box">
+
+            <span class="set-letter">
+                C
+            </span>
+
+            <div>
+
+                <strong>High Performance</strong>
+
+                <p>
+                    Subjects where performance
+                    is at least 80%.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="venn-container">
+
+    <div class="venn-title">
+
+        <h2>Set Visualization</h2>
+
+        <p>
+            A ∩ B ∩ C represents subjects satisfying
+            all three conditions.
+        </p>
+
+    </div>
+
+
+    <div class="venn">
+
+        <div class="circle circle-a">
+            <span>A</span>
+        </div>
+
+        <div class="circle circle-b">
+            <span>B</span>
+        </div>
+
+        <div class="circle circle-c">
+            <span>C</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="set-grid">
+
+
+    <div class="set-result-card">
+
+        <span class="result-symbol">
+            A ∪ B
+        </span>
+
+        <h3>Union</h3>
+
+        <p>
+            Subjects that are either passed
+            or have good attendance.
+        </p>
+
+        <div class="result-list">
+
+            {% for item in union_AB %}
+
+            <span>
+                {{ item }}
+            </span>
+
+            {% else %}
+
+            <small>Empty Set ∅</small>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <div class="set-result-card">
+
+        <span class="result-symbol">
+            A ∩ B
+        </span>
+
+        <h3>Intersection</h3>
+
+        <p>
+            Subjects that are both passed
+            and have good attendance.
+        </p>
+
+        <div class="result-list">
+
+            {% for item in intersection_AB %}
+
+            <span>
+                {{ item }}
+            </span>
+
+            {% else %}
+
+            <small>Empty Set ∅</small>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <div class="set-result-card">
+
+        <span class="result-symbol">
+            A − B
+        </span>
+
+        <h3>Difference</h3>
+
+        <p>
+            Passed subjects where attendance
+            is below 75%.
+        </p>
+
+        <div class="result-list">
+
+            {% for item in difference_AB %}
+
+            <span>
+                {{ item }}
+            </span>
+
+            {% else %}
+
+            <small>Empty Set ∅</small>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <div class="set-result-card">
+
+        <span class="result-symbol">
+            A ∩ B ∩ C
+        </span>
+
+        <h3>Three-Way Intersection</h3>
+
+        <p>
+            Subjects that satisfy all three
+            performance conditions.
+        </p>
+
+        <div class="result-list">
+
+            {% for item in intersection_ABC %}
+
+            <span>
+                {{ item }}
+            </span>
+
+            {% else %}
+
+            <small>Empty Set ∅</small>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h2>Subject Classification</h2>
+
+            <p>
+                Each subject is classified according
+                to the three sets.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Subject</th>
+                    <th>Performance</th>
+                    <th>Attendance</th>
+                    <th>Set A</th>
+                    <th>Set B</th>
+                    <th>Set C</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for subject in subjects %}
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+                            {{ subject.code }}
+                        </strong>
+
+                        <br>
+
+                        {{ subject.name }}
+
+                    </td>
+
+                    <td>
+                        {{ subject.percentage }}%
+                    </td>
+
+                    <td>
+                        {{ subject.attendance }}%
+                    </td>
+
+                    <td>
+
+                        {% if subject.passed %}
+
+                        <span class="set-yes">
+                            ✓ A
+                        </span>
+
+                        {% else %}
+
+                        <span class="set-no">
+                            —
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if subject.good_attendance %}
+
+                        <span class="set-yes">
+                            ✓ B
+                        </span>
+
+                        {% else %}
+
+                        <span class="set-no">
+                            —
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if subject.high_performance %}
+
+                        <span class="set-yes">
+                            ✓ C
+                        </span>
+
+                        {% else %}
+
+                        <span class="set-no">
+                            —
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="formula-card">
+
+    <h2>Set Theory Used</h2>
+
+    <div class="formula-list">
+
+        <div>
+            <strong>Union:</strong>
+            A ∪ B
+        </div>
+
+        <div>
+            <strong>Intersection:</strong>
+            A ∩ B
+        </div>
+
+        <div>
+            <strong>Difference:</strong>
+            A − B
+        </div>
+
+        <div>
+            <strong>Three Set Intersection:</strong>
+            A ∩ B ∩ C
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

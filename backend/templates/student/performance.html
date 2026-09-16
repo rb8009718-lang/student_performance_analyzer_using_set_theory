@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Performance Analysis{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <p class="eyebrow">STUDENT ANALYTICS</p>
+
+        <h1>Performance Analysis</h1>
+
+        <p>
+            Subject-wise academic performance.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="highlight-card">
+
+    <div>
+
+        <span>Overall Performance</span>
+
+        <strong>
+            {{ overall_percentage }}%
+        </strong>
+
+    </div>
+
+    <div class="large-icon">
+        📈
+    </div>
+
+</div>
+
+
+<div class="content-card chart-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h2>Subject Performance</h2>
+
+            <p>
+                Percentage based on average marks.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="chart-container">
+
+        <canvas id="performanceChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="card-header">
+
+        <h2>Detailed Performance</h2>
+
+    </div>
+
+
+    {% if performance %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Subject</th>
+                    <th>Average Marks</th>
+                    <th>Maximum</th>
+                    <th>Percentage</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in performance %}
+
+                {% if row.average_marks is not none %}
+
+                {% set percentage =
+                    (row.average_marks / row.max_marks) * 100
+                %}
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+                            {{ row.subject_code }}
+                        </strong>
+
+                        <br>
+
+                        {{ row.subject_name }}
+
+                    </td>
+
+                    <td>
+                        {{ "%.2f"|format(row.average_marks) }}
+                    </td>
+
+                    <td>
+                        {{ row.max_marks }}
+                    </td>
+
+                    <td>
+                        {{ "%.1f"|format(percentage) }}%
+                    </td>
+
+                    <td>
+
+                        {% if row.average_marks >= row.passing_marks %}
+
+                        <span class="status present">
+                            Passed
+                        </span>
+
+                        {% else %}
+
+                        <span class="status absent">
+                            Needs Improvement
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="5">
+                        {{ row.subject_code }}
+                        - No marks available
+                    </td>
+
+                </tr>
+
+                {% endif %}
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+const labels = {{ chart_labels | tojson }};
+const values = {{ chart_values | tojson }};
+
+const canvas =
+    document.getElementById("performanceChart");
+
+if (canvas && labels.length > 0) {
+
+    new Chart(canvas, {
+
+        type: "bar",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [
+
+                {
+                    label: "Performance %",
+                    data: values,
+                    borderWidth: 1
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Students{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <p class="eyebrow">TEACHER PANEL</p>
+
+        <h1>Students</h1>
+
+        <p>
+            Manage students division-wise.
+        </p>
+    </div>
+
+    <a href="{{ url_for('add_student') }}"
+       class="primary-btn">
+        + Add Student
+    </a>
+
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET"
+          class="filter-form">
+
+        <div>
+
+            <label>Filter by Division</label>
+
+            <select name="division_id">
+
+                <option value="">
+                    All Divisions
+                </option>
+
+                {% for division in divisions %}
+
+                <option
+                    value="{{ division.id }}"
+                    {% if selected_division|string == division.id|string %}
+                    selected
+                    {% endif %}
+                >
+                    {{ division.division_name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <button class="secondary-btn"
+                type="submit">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h2>Student List</h2>
+
+            <p>
+                {{ students|length }} student(s) found.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if students %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Roll No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Semester</th>
+                    <th>Division</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for student in students %}
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            {{ student.student_roll }}
+                        </strong>
+                    </td>
+
+                    <td>{{ student.name }}</td>
+
+                    <td>{{ student.email }}</td>
+
+                    <td>{{ student.course }}</td>
+
+                    <td>{{ student.semester }}</td>
+
+                    <td>
+                        <span class="badge">
+                            {{ student.division_name or "N/A" }}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <div class="action-group">
+
+                            <a
+                                href="{{ url_for('manage_marks', student_id=student.id) }}"
+                                class="small-btn blue">
+                                Marks
+                            </a>
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('delete_student', student_id=student.id) }}"
+                                onsubmit="return confirm('Delete this student?');">
+
+                                <button
+                                    type="submit"
+                                    class="small-btn danger">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            No students found.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

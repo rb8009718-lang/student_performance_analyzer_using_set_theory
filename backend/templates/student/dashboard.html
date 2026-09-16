@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <p class="eyebrow">STUDENT PORTAL</p>
+
+        <h1>
+            Welcome, {{ student.name }}
+        </h1>
+
+        <p>
+            View your academic performance and analysis.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="profile-card">
+
+    <div class="profile-avatar">
+        {{ student.name[0]|upper }}
+    </div>
+
+    <div class="profile-info">
+
+        <h2>{{ student.name }}</h2>
+
+        <p>
+            {{ student.student_roll }}
+            · {{ student.course }}
+        </p>
+
+        <span class="badge">
+            {{ student.division_name or "Division N/A" }}
+        </span>
+
+    </div>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📚</div>
+
+        <div>
+
+            <span>Subjects</span>
+
+            <strong>
+                {{ subject_count }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📝</div>
+
+        <div>
+
+            <span>Marks Records</span>
+
+            <strong>
+                {{ marks_count }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📅</div>
+
+        <div>
+
+            <span>Attendance Records</span>
+
+            <strong>
+                {{ attendance_count }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">✓</div>
+
+        <div>
+
+            <span>Passed Subjects</span>
+
+            <strong>
+                {{ passed_subjects }}
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<h2 class="section-title">
+    My Academic Portal
+</h2>
+
+
+<div class="management-grid">
+
+    <a
+        href="{{ url_for('student_marks') }}"
+        class="management-card">
+
+        <span class="management-icon">📊</span>
+
+        <h3>My Marks</h3>
+
+        <p>
+            View all examination marks.
+        </p>
+
+        <span class="card-link">
+            View →
+        </span>
+
+    </a>
+
+
+    <a
+        href="{{ url_for('student_attendance') }}"
+        class="management-card">
+
+        <span class="management-icon">📅</span>
+
+        <h3>Attendance</h3>
+
+        <p>
+            Check subject-wise attendance.
+        </p>
+
+        <span class="card-link">
+            View →
+        </span>
+
+    </a>
+
+
+    <a
+        href="{{ url_for('student_performance') }}"
+        class="management-card">
+
+        <span class="management-icon">📈</span>
+
+        <h3>Performance</h3>
+
+        <p>
+            Analyze your academic performance.
+        </p>
+
+        <span class="card-link">
+            Analyze →
+        </span>
+
+    </a>
+
+
+    <a
+        href="{{ url_for('set_analysis') }}"
+        class="management-card">
+
+        <span class="management-icon">⭕</span>
+
+        <h3>Set Theory</h3>
+
+        <p>
+            Analyze performance using sets.
+        </p>
+
+        <span class="card-link">
+            Explore →
+        </span>
+
+    </a>
+
+</div>
+
+{% endblock %}

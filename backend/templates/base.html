@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}Student Performance Analyzer{% endblock %}
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+{% if session.get("user_id") %}
+
+<nav class="navbar">
+
+    <div class="nav-brand">
+        <div class="brand-icon">SP</div>
+
+        <div>
+            <strong>Student Performance</strong>
+            <small>Analyzer</small>
+        </div>
+    </div>
+
+    <div class="nav-links">
+
+        {% if session.get("role") == "teacher" %}
+
+        <a href="{{ url_for('teacher_dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('teacher_students') }}">
+            Students
+        </a>
+
+        <a href="{{ url_for('teacher_marks') }}">
+            Marks
+        </a>
+
+        <a href="{{ url_for('teacher_attendance') }}">
+            Attendance
+        </a>
+
+        <a href="{{ url_for('teacher_subjects') }}">
+            Subjects
+        </a>
+
+        {% else %}
+
+        <a href="{{ url_for('student_dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('student_marks') }}">
+            Marks
+        </a>
+
+        <a href="{{ url_for('student_attendance') }}">
+            Attendance
+        </a>
+
+        <a href="{{ url_for('student_performance') }}">
+            Performance
+        </a>
+
+        <a href="{{ url_for('set_analysis') }}">
+            Set Analysis
+        </a>
+
+        {% endif %}
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+{% endif %}
+
+
+<main class="main-container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

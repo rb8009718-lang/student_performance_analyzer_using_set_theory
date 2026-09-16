@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}My Marks{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <p class="eyebrow">STUDENT PORTAL</p>
+
+        <h1>My Marks</h1>
+
+        <p>
+            {{ student.name }} · {{ student.student_roll }}
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    {% if marks %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Subject</th>
+                    <th>Exam</th>
+                    <th>Marks</th>
+                    <th>Maximum</th>
+                    <th>Percentage</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for mark in marks %}
+
+                {% set percentage =
+                    (mark.marks / mark.max_marks) * 100
+                %}
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+                            {{ mark.subject_code }}
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            {{ mark.subject_name }}
+                        </small>
+
+                    </td>
+
+                    <td>
+                        {{ mark.exam_type }}
+                    </td>
+
+                    <td>
+                        {{ mark.marks }}
+                    </td>
+
+                    <td>
+                        {{ mark.max_marks }}
+                    </td>
+
+                    <td>
+                        {{ "%.1f"|format(percentage) }}%
+                    </td>
+
+                    <td>
+
+                        {% if mark.marks >= mark.passing_marks %}
+
+                        <span class="status present">
+                            Passed
+                        </span>
+
+                        {% else %}
+
+                        <span class="status absent">
+                            Failed
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <div class="empty-icon">📝</div>
+
+        <h3>No marks available</h3>
+
+        <p>
+            Your teacher has not entered marks yet.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

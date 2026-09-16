@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <p class="eyebrow">TEACHER PANEL</p>
+
+        <h1>Attendance</h1>
+
+        <p>
+            Record and manage student attendance.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <h2>Mark Attendance</h2>
+
+    <form method="POST">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Student</label>
+
+                <select name="student_id" required>
+
+                    <option value="">
+                        Select Student
+                    </option>
+
+                    {% for student in students %}
+
+                    <option value="{{ student.id }}">
+
+                        {{ student.student_roll }}
+                        -
+                        {{ student.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Subject</label>
+
+                <select name="subject_id" required>
+
+                    <option value="">
+                        Select Subject
+                    </option>
+
+                    {% for subject in subjects %}
+
+                    <option value="{{ subject.id }}">
+
+                        {{ subject.subject_code }}
+                        -
+                        {{ subject.subject_name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Date</label>
+
+                <input
+                    type="date"
+                    name="date"
+                    id="attendanceDate"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Status</label>
+
+                <select name="status" required>
+
+                    <option value="Present">
+                        Present
+                    </option>
+
+                    <option value="Absent">
+                        Absent
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="primary-btn">
+
+            Save Attendance
+
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h2>Recent Attendance</h2>
+
+            <p>
+                Latest attendance records.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if attendance %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Date</th>
+                    <th>Student</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in attendance %}
+
+                <tr>
+
+                    <td>
+                        {{ record.date }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ record.student_roll }}
+                        </strong>
+
+                        <br>
+
+                        {{ record.name }}
+                    </td>
+
+                    <td>
+                        {{ record.subject_code }}
+                    </td>
+
+                    <td>
+
+                        {% if record.status == "Present" %}
+
+                        <span class="status present">
+                            Present
+                        </span>
+
+                        {% else %}
+
+                        <span class="status absent">
+                            Absent
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <form
+                            method="POST"
+                            action="{{ url_for('delete_attendance', attendance_id=record.id) }}"
+                            onsubmit="return confirm('Delete attendance record?');">
+
+                            <button
+                                class="small-btn danger"
+                                type="submit">
+                                Delete
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        No attendance records found.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
