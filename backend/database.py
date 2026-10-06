@@ -1,8 +1,11 @@
-import sqlite3
 import os
+import sqlite3
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE = os.path.join(BASE_DIR, "database", "student_performance.db")
+if os.environ.get("VERCEL"):
+    DATABASE = os.path.join("/tmp", "student_performance.db")
+else:
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    DATABASE = os.path.join(BASE_DIR, "database", "student_performance.db")
 
 
 def get_db_connection():
